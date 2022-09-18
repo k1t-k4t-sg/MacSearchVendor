@@ -10,11 +10,12 @@ import (
 	"google.golang.org/grpc"
 )
 
+
 func main() {
 	s := grpc.NewServer()
 	pb.RegisterSearchVendorServer(s, &mac.GrpcServer{})
 
-	l, err := net.Listen("tcp", ":8080")
+	l, err := net.Listen("tcp", ":50501")
 	if err != nil {
 		log.Fatal(err)
 	}

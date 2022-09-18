@@ -12,27 +12,31 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-type GrpcServer struct {
-	pb.UnimplementedSearchVendorServer 
-}
+var ByteValue []byte
 
-func (g *GrpcServer) GetSearchVendor(ctx context.Context, reg *pb.Mac) (*pb.Vendor, error) {
+func init(){
 	jsonFile, err := os.Open("static/mac_base.json")
 	if err != nil {
 		fmt.Println(err)
 	}
 	defer jsonFile.Close()
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	mac_1c := reg.GetQuery()
-	if !gjson.ValidBytes(byteValue) {
+	ByteValue, _ = ioutil.ReadAll(jsonFile)
+	if !gjson.ValidBytes(ByteValue) {
 		fmt.Println("Invalid mac_base.json")
-		return &pb.Vendor{Query: mac_1c, Vendor: "nil"}, nil
 	} else {
-		result := SearchVendor(&byteValue, MacParse(mac_1c))
-		return &pb.Vendor{
-			Query: MacParse(mac_1c),
-			Vendor: result}, nil
+		fmt.Println("Succes mac_base.json")
 	}
+}
+
+type GrpcServer struct {
+	pb.UnimplementedSearchVendorServer 
+}
+
+func (g *GrpcServer) GetSearchVendor(ctx context.Context, reg *pb.Mac) (*pb.Vendor, error) {
+	mac_1c := reg.GetQuery()
+	return &pb.Vendor{
+		Query: MacParse(mac_1c),
+		Vendor: SearchVendor(&ByteValue, MacParse(mac_1c))}, nil
 }
 
 func SearchVendor(json *[]byte, unique_mac string) string {
