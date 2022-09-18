@@ -12,7 +12,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-var ByteValue []byte
+var BYTE_VALUE_VENDOR []byte
 
 func init(){
 	jsonFile, err := os.Open("static/mac_base.json")
@@ -20,8 +20,8 @@ func init(){
 		fmt.Println(err)
 	}
 	defer jsonFile.Close()
-	ByteValue, _ = ioutil.ReadAll(jsonFile)
-	if !gjson.ValidBytes(ByteValue) {
+	BYTE_VALUE_VENDOR, _ = ioutil.ReadAll(jsonFile)
+	if !gjson.ValidBytes(BYTE_VALUE_VENDOR) {
 		fmt.Println("Invalid mac_base.json")
 	} else {
 		fmt.Println("Succes mac_base.json")
@@ -36,7 +36,7 @@ func (g *GrpcServer) GetSearchVendor(ctx context.Context, reg *pb.Mac) (*pb.Vend
 	mac_1c := reg.GetQuery()
 	return &pb.Vendor{
 		Query: MacParse(mac_1c),
-		Vendor: SearchVendor(&ByteValue, MacParse(mac_1c))}, nil
+		Vendor: SearchVendor(&BYTE_VALUE_VENDOR, MacParse(mac_1c))}, nil
 }
 
 func SearchVendor(json *[]byte, unique_mac string) string {
