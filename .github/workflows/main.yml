@@ -1,6 +1,6 @@
 name: MacSearchVendorTest
 
-on [push]
+on: [push]
 
 jobs:
   Install:
