@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package conf_server;
+option go_package = "github.com/example/path/gen;gen";
+
+service SearchVendor {
+    rpc GetSearchVendor(Mac) returns (Vendor) {}
+}
+
+message Mac {
+   string query = 1;
+}
+
+message Vendor {
+   string query = 1;
+   string vendor = 2;
+   string octets = 3;
+}
