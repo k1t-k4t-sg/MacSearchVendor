@@ -1,0 +1,10 @@
+name: MacSearchVendorTest
+
+on [push]
+
+jobs:
+  Install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls -la
